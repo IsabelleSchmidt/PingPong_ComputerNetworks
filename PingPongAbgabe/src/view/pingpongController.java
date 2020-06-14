@@ -51,7 +51,7 @@ public class pingpongController {
 	@FXML
 	void zweiServer(ActionEvent event) {
 		Server server = new Server(1717, "Weitz Server");
-		Server server2 = new Server(1234, "Krechel Server");
+		Server server2 = new Server(1234, "Schaible Server");
     	Client client = new Client();
     	
     	//Starte Server
