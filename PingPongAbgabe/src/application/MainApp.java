@@ -1,17 +1,15 @@
 package application;
 
-import java.awt.event.WindowAdapter;
 import java.io.IOException;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
+
 
 public class MainApp extends Application {
 
@@ -29,10 +27,9 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
         
-        stage.setOnCloseRequest(windowEvent ->{
-        	
+        stage.setOnCloseRequest(windowEvent -> {
+        	Platform.exit();
         	System.exit(0);
-        	
 	    });
         
     }

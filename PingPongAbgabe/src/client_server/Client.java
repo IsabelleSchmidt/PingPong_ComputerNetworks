@@ -5,14 +5,12 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
 import java.util.TimerTask;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import message.Message;
@@ -20,7 +18,7 @@ import message.Status;
 
 public class Client {
 	
-	boolean socketOn;
+	//public boolean socketOn;
 	private DatagramSocket socket;
 	private InetAddress IPAddress;
 	private final String ping = "PING";
@@ -28,10 +26,9 @@ public class Client {
 	
 	Map<EndpointInfo, EndpointData> serverMap = new HashMap<>();
 	
-	public ObservableList<String> obsList1  = FXCollections.observableArrayList();
+	public SimpleBooleanProperty socketOn = new SimpleBooleanProperty();
+	public ObservableList<String> obsList1 = FXCollections.observableArrayList();
 	public ObservableList<String> obsList2 = FXCollections.observableArrayList();
-	
-	
 	
 	public Client() {
 		try {
@@ -42,17 +39,17 @@ public class Client {
 	}
 	
 	/**
-	 * Methode �ffnet den Socket
+	 * Methode oeffnet den Socket
 	 */
 	public void openSocket() {
 		try {
-			//Sende- und Empfangpunkt f�r das verarbeiten von Paketen
+			//Sende- und Empfangpunkt fuer das verarbeiten von Paketen
 			socket = new DatagramSocket();
 			
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-		socketOn = true;
+		socketOn.set(true);
 	}
 	
 	public void startCommunication(EndpointInfo[] serverInfo) {
@@ -66,9 +63,9 @@ public class Client {
 		
 		new Thread() {
 			
-			// Empfange Nachrichten solange Socket ge�ffnet ist
+			// Empfange Nachrichten solange Socket geoeffnet ist
 			public void run() {
-				while(socketOn) {
+				while(socketOn.get()) {
 					DatagramPacket reply = new DatagramPacket(new byte[1024], 1024);
 					Message serverMessage;
 					
@@ -95,8 +92,8 @@ public class Client {
 			            }
 						
 					} catch (IOException e) {
-						if (!socketOn) {
-							System.out.println("CLIENT: Socket is closed.");
+						if (!socketOn.get()) {
+							System.out.println("CLIENT: client socket is closed.");
 						} else {
 							e.printStackTrace();
 						}
@@ -155,18 +152,7 @@ public class Client {
 				for (EndpointInfo server : serverMap.keySet()) {
 					EndpointData data = serverMap.get(server);
 					System.out.println("Pakete gesendete an: " + server.toString());
-					System.out.println("Number of timeouts: " + data.getNumberOfTimeouts());
-					for (int i = 0; i < data.getPackets().length; i++) {
-						//System.out.println("Packet " + i + ": " + data.getPackets()[i] + ", " + "RTT: " + data.rtt(i));
-//						if(server.getPort() == 1717){
-//			            	obsList1.add("Packet: " + i + "RTT: " +  data.rtt(i));
-//			            	
-//			            }else {
-//			            	obsList2.add("Packet: " + i + "RTT: " +  data.rtt(i));
-//			            }
-					}
-					
-					
+					System.out.println("Number of timeouts: " + data.getNumberOfTimeouts());		
 				}
 				
 			}
@@ -175,7 +161,7 @@ public class Client {
 	}
 	
 	/**
-	 * Timer wird f�r ein bestimmtes Message gestartet. 
+	 * Timer wird fuer ein bestimmtes Message gestartet. 
 	 * Wenn Zeit abgelaufen ist und die Bestaetigung vom Server nicht erhalten wurde, sendet der Client das Message erneut.
 	 * 
 	 *
@@ -193,6 +179,7 @@ public class Client {
             try {
                 if (!(data.getPacketStatus(message.getNr()) == Status.ACKED)) {
                     sendMessage(message);
+                    obsList1.add("PING " + message.getNr() + ", " + Status.RESENT.name());
                     System.out.println("CLIENT: Resend " + message.toString());
                     data.setPacketStatus(message.getNr(), Status.RESENT);
                     data.setNumberOfTimeouts();
@@ -221,7 +208,7 @@ public class Client {
 	}
 	
 	public void closeSocket() {
-		socketOn = false;
+		socketOn.set(false);
 		socket.close();
 	}
 	
@@ -245,8 +232,5 @@ public class Client {
 	public ObservableList<String> getObsList2() {
 		return obsList2;
 	}
-	
-	
-
 
 }
