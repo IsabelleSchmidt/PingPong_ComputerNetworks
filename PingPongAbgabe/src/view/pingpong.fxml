@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.pingpongController">
@@ -13,12 +15,18 @@
             <ListView fx:id="list1" layoutX="18.0" layoutY="12.0" prefHeight="675.0" prefWidth="265.0" />
             <ListView fx:id="list2" layoutX="616.0" layoutY="12.0" prefHeight="675.0" prefWidth="267.0" />
             <Button layoutX="316.0" layoutY="652.0" mnemonicParsing="false" onAction="#einServer" text="1 Server" />
-            <Button layoutX="524.0" layoutY="652.0" mnemonicParsing="false" onAction="#zweiServer" text="2 Server" />
+            <Button layoutX="524.0" layoutY="651.0" mnemonicParsing="false" onAction="#zweiServer" text="2 Server" />
             <Label layoutX="366.0" layoutY="26.0" prefHeight="54.0" prefWidth="180.0" text="PING PONG">
                <font>
                   <Font size="33.0" />
                </font>
             </Label>
+            <Circle fill="WHITE" layoutX="449.0" layoutY="372.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <Circle fill="#cdb39e" layoutX="451.0" layoutY="216.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <Circle fill="#d73a3a" layoutX="451.0" layoutY="216.0" radius="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#755337" height="34.0" layoutX="444.0" layoutY="270.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="15.0" />
+            <Circle fill="#cdb39e" layoutX="426.0" layoutY="498.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#755337" height="34.0" layoutX="420.0" layoutY="550.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="15.0" />
          </children></AnchorPane>
    </children>
 </AnchorPane>
